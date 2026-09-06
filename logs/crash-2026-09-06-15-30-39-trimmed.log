@@ -1,0 +1,73 @@
+CRASH TIME: 2026-09-06 09:30:39
+Skyrim SSE v1.6.1170
+CrashLoggerSSE v1-16-0-0 Oct  7 2025 06:54:42
+
+Unhandled exception "EXCEPTION_ACCESS_VIOLATION" at 0x7FF7685FE7DD SkyrimSE.exe+143E7DD	mov byte ptr [rbx+rax*1], 0x00
+Exception Flags: 0x00000000 (Continuable)
+Number of Parameters: 2
+Exception Thread ID: 24512
+Access Violation: Tried to read memory at 0xFFFFFFFFFFFFFFFF
+
+PROCESS INFO:
+	Process ID: 14312
+	Crash Thread ID: 24512
+	Process Uptime: 00:01:35 (95986ms)
+	Working Directory: I:\Modded Skyrim\Stock Game
+	Command Line: "I:\Modded Skyrim\Stock Game\\SkyrimSE.exe"
+	Executable MD5: 7a44a52dfc92d78f934c4d12ed92f494
+	Executable Size: 37157144 bytes
+	Executable Modified: 2026-08-10 07:05:16
+	Elevated: No
+
+SYSTEM SPECS:
+	OS: Microsoft Windows 11 Pro v10.0.26100
+	CPU: AuthenticAMD AMD Ryzen 9 9950X 16-Core Processor            
+	CPU Cores: 16 logical, 16 physical, 1 packages
+	GPU #1: Nvidia NVIDIA GeForce RTX 5080
+	GPU #2: AMD AMD Radeon(TM) Graphics
+	GPU #3: Microsoft Basic Render Driver
+	PHYSICAL MEMORY: 18.22 GB/31.14 GB
+	VIRTUAL MEMORY: 92.95 GB/131072.00 GB
+	PROCESS MEMORY: Working Set: 8056.26 MB, Private: 16046.17 MB, Peak: 8056.26 MB
+	PAGE FAULTS: 4178137 (Peak: 8447598592)
+	GPU MEMORY: 7.29/14.85 GB
+
+PROBABLE CALL STACK:
+	[ 0] 0x7FF7685FE7DD                SkyrimSE.exe+143E7DD -> 104661+0x2ED	mov byte ptr [rbx+rax*1], 0x00
+	[ 1] 0x7FF76860B258                SkyrimSE.exe+144B258 -> 104829+0x108	movzx r13d, al
+	[ 2] 0x7FF767B8DC6C                SkyrimSE.exe+09CDC6C -> 54049+0x9C	mov edx, [0x00007FF76A7B0878]
+	[ 3] 0x7FF767B89FF2                SkyrimSE.exe+09C9FF2 -> 54018+0x22	test al, al
+	[ 4] 0x7FF7677C988E                SkyrimSE.exe+060988E -> 35641+0xEE	nop
+	[ 5] 0x7FF7677C6938                SkyrimSE.exe+0606938 -> 35600+0x9A8	mov edx, 0x3EE
+	[ 6] 0x7FFFDB4E070B         skse64_1_6_1170.dll+001070B
+	[ 7] 0x7FF7677D5654                SkyrimSE.exe+0615654 -> 442580+0x354	mov [rbp+0x478], al
+	[ 8] 0x7FF7677D351A                SkyrimSE.exe+061351A -> 35772+0x46A	test al, al
+	[ 9] 0x7FFFDB4E08D8         skse64_1_6_1170.dll+00108D8
+	[10] 0x7FF767805F3F                SkyrimSE.exe+0645F3F -> 36564+0x9F	mov rax, [0x00007FF7692B8928]
+	[11] 0x7FFFCD586C49 PlayerRotationGPSupport.dll+0066C49
+	[12] 0x7FFFD233318E                hdtsmp64.dll+004318E	mov edx, 0x10 |  D:\a\hdtSMP64\hdtSMP64\src\Hooks.cpp:213 static void Hooks::MainHooks::Update(RE::Main * const) [?Update@MainHooks@Hooks@@SAXQEAVMain@RE@@@Z]
+	[13] 0x7FF7677FEAD5                SkyrimSE.exe+063EAD5 -> 36544+0x165	test bl, bl
+	[14] 0x7FF7686FBB8E                SkyrimSE.exe+153BB8E -> 109636+0x106	mov ebx, eax
+	[15] 0x7FF8B3BDCCB7                KERNEL32.DLL+002CCB7
+	[16] 0x7FF8B5A4AD6C                   ntdll.dll+00AAD6C
+
+REGISTERS:
+	RAX 0x333A226469227B2C (size_t) [3691300659239484204]
+	RCX 0x8163F9           (size_t) [8479737]
+	RDX 0x2A36A976374      (void*)
+	RBX 0x31C5             (size_t) [12741]
+	RSP 0xE5E4CFE310       (void*)
+	RBP 0x2A287C34100      (void*)
+	RSI 0x2A287E1B2C0      (void*)
+	RDI 0x2A287E11368      (void*)
+	R8  0x5                (size_t) [5]
+	R9  0xA0               (size_t) [160]
+	R10 0x7FF89CFC0000     (void*)
+	R11 0x7FF89CFDC5CB     (void* -> VCRUNTIME140.dll+001C5CB	vmovdqu8 ymm1, ymmword ptr [rdx+r9*1-0xA0])
+	R12 0xF20A             (size_t) [61962]
+	R13 0xE5E4CFECB0       (LoadStorageWrapper*)
+	R14 0x2A5F0D0EA60      (void*)
+	R15 0x19278            (size_t) [103032]
+
+
+[trimmed: MODULES, SKSE PLUGINS and PLUGINS sections removed — full plugin list withheld]

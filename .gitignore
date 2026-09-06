@@ -1,0 +1,7 @@
+# Deliberately NOT published here:
+#  - another user's crash log (shared in Discord for support, not for republication)
+#  - the Kodex support_output.html (embeds the full 3,700-mod list verbatim)
+#  - untrimmed crash logs (same reason)
+support_output.html
+crash-2026-09-06-12-36-34.log
+*-untrimmed.log
