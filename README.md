@@ -10,16 +10,21 @@ loaded from the main menu. A new game always works.
 **Status:** reproduced on **two machines**, **two list versions** (2.3.0 and 2.3.1), and — critically
 — on **one unmodified profile that is not mine**.
 
-> ### Lead — strongly indicated, not yet confirmed
+> ### RESOLVED — confirmed by the mod author and fixed upstream
 >
+> **Fixed in `Sanguine's Trade` v1.0.7b (2026-09-06); shipped in DoD 2.4.0.** The author's changelog:
+> *"Saves made with 1.0.7 could crash on load, every time, even with the mod removed. The Ledger's
+> instant first open parked a large block of text inside the save, and the game cannot read it back."*
+>
+> The diagnosis below was reached independently before that fix was published, and matches it.
 > All five JSON fragments found in `RAX` are **field names from one mod's client roster**
 > (`Sanguine's Trade - An Economy Mod`), the payload is **physically present in the crashing save and
 > absent from the working one**, and the mod pushes that roster through a **Papyrus `String`** — which
 > is serialised into the `.ess`, explaining why deleting the SKSE co-save changed nothing.
 >
-> **This is not a verdict.** The decisive test — a fresh character with the mod disabled — has not
-> been run. Five earlier hypotheses here looked comparably good and all five died under a controlled
-> test. Full working: **[`evidence/root-cause-candidate.md`](evidence/root-cause-candidate.md)**.
+> **The decisive test passed.** A fresh character with the mod unmounted, played past the boundary
+> where every earlier character had already broken, produced saves with no payload — and they load.
+> Full working: **[`evidence/root-cause-candidate.md`](evidence/root-cause-candidate.md)**.
 >
 > Lead credited to **`Nutella`** in the Bordello crashlog thread.
 

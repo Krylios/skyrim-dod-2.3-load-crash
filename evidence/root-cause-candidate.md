@@ -158,3 +158,75 @@ plugin points at it, so unmounting it orphans nothing.
 **Do not run any of them while the test is in progress.** A Synthesis re-run changes the load order
 mid-bisection, and if the mod turns out to be innocent it goes back in and the run has to be redone.
 Re-runs are for a settled list, not for a list under test.
+
+---
+
+## 9. RESOLVED — the test passed, and the author confirmed it
+
+### The controlled test
+
+A fourth character, created fresh with `Sanguine's Trade` fully unmounted, played past the boundary
+where every previous character had already broken. Nine saves, all clean:
+
+| playtime | cell | payload |
+|---|---|---|
+| `000.05.28` … `000.46.19` | various | clean |
+| `000.46.52` | Hall of the Elements ("Before FL") | clean |
+| **`000.49.23`** | Hall of the Elements (**"After FL"**) | **clean** |
+| **`000.50.56`** | Hall of the Elements | **clean** |
+
+The matched pair is the result:
+
+| | old run (mod active) | new run (mod unmounted) |
+|---|---|---|
+| save name | `Vania After FL` | `Vania After FL` |
+| playtime | `000.50.54` | `000.49.23` |
+| cell | Hall of the Elements | Hall of the Elements |
+| payload | **ROSTER PRESENT** | **none** |
+| loads? | **no** | **yes** |
+
+Same character name, same cell, same quest beat, past the boundary where the old run was already
+unloadable. `000.49.23` clears the old first-bad point of `000.49.14`. The save loads and play
+continues normally.
+
+### Confirmed upstream
+
+`Sanguine's Trade - An Economy Mod` **v1.0.7b** (2026-09-06) — the author's changelog:
+
+> **FIXED: Saves made with 1.0.7 could crash on load, every time, even with the mod removed. The
+> Ledger's instant first open parked a large block of text inside the save, and the game cannot read
+> it back.** That feature is gone; the first open of a session builds the page live again, as in
+> 1.0.6.
+
+Shipped in **DoD 2.4.0** (2026-09-06), whose release note reads: *"This non-save safe update was
+unfortunately mandatory due to everyone's saves not functioning correctly."*
+
+The trigger is visible in the **1.0.7** changelog that introduced it: *"FIXED: Opening the Ledger
+cost four to seven seconds of frozen game. It paints instantly on the first open of a session now."*
+That optimisation cached the Ledger's rendered page content into a Papyrus string — the
+`ST_PrismaBridge.Invoke("window.STRender(" + jsonString + ")")` path traced in §4 — and Papyrus
+strings are serialised into the `.ess`.
+
+### Correspondence between what was measured and what the author states
+
+| measured here | author's wording |
+|---|---|
+| a JSON block inside the `.ess`, extracted at offset 2,772,248 | "parked a large block of text inside the save" |
+| the fault is on the save-load path | "the game cannot read it back" |
+| unmounting the mod left `RAX`/`RBX`/`R15` byte-identical | "even with the mod removed" |
+| `RBX` = 12,741 / 16,019 / 16,036 / 16,278, varying per save | "a large block of text" |
+
+The diagnosis was reached independently, before the fix was published.
+
+### Scope — this explains the third-party case too
+
+`Sanguine's Trade` is part of the **curated list**, not a personal addition: it sits at line 271 of
+the stock `Diaries of Dibella - Lord's Vision` profile, enabled. So the corroborating crash on an
+unmodified 2.3.1 profile on another machine had the same mod, at the same broken version. Nothing in
+the modified fork was ever required to reproduce this.
+
+### If you are hitting this
+
+1. Update `Sanguine's Trade` to **v1.0.7b**, or take **DoD 2.4.0**, which ships it.
+2. **Saves already carrying the payload are unrecoverable.** Removing the mod does not retract it —
+   verified. 2.4.0 is a minor version bump and is not save-safe regardless.
