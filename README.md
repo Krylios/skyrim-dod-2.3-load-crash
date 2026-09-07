@@ -8,14 +8,27 @@ version is left in with a correction.
 loaded from the main menu. A new game always works.
 
 **Status:** reproduced on **two machines**, **two list versions** (2.3.0 and 2.3.1), and — critically
-— on **one unmodified profile that is not mine**. Cause not identified.
+— on **one unmodified profile that is not mine**.
+
+> ### Lead — strongly indicated, not yet confirmed
+>
+> All five JSON fragments found in `RAX` are **field names from one mod's client roster**
+> (`Sanguine's Trade - An Economy Mod`), the payload is **physically present in the crashing save and
+> absent from the working one**, and the mod pushes that roster through a **Papyrus `String`** — which
+> is serialised into the `.ess`, explaining why deleting the SKSE co-save changed nothing.
+>
+> **This is not a verdict.** The decisive test — a fresh character with the mod disabled — has not
+> been run. Five earlier hypotheses here looked comparably good and all five died under a controlled
+> test. Full working: **[`evidence/root-cause-candidate.md`](evidence/root-cause-candidate.md)**.
+>
+> Lead credited to **`Nutella`** in the Bordello crashlog thread.
 
 | | |
 |---|---|
 | Fault | `SkyrimSE.exe+143E7DD` — `mov byte ptr [rbx+rax*1], 0x00` |
 | Exception | `EXCEPTION_ACCESS_VIOLATION` reading `0xFFFFFFFFFFFFFFFF` |
 | Runtime | 1.6.1170, `SkyrimSE.exe` MD5 `7a44a52dfc92d78f934c4d12ed92f494` |
-| Occurrences | 19 of mine + 1 third-party, all identical |
+| Occurrences | 20 of mine + 1 third-party, all identical |
 | Reproduction | ~2 minutes, no gameplay required (below) |
 
 ### Contents
@@ -26,6 +39,7 @@ loaded from the main menu. A new game always works.
 | [`logs/`](logs) | three of my crash logs, **trimmed** to header + registers + call stack |
 | [`evidence/signature-table.md`](evidence/signature-table.md) | all 19 crashes, register by register |
 | [`evidence/save-bisection.md`](evidence/save-bisection.md) | how the failing window was narrowed |
+| [`evidence/root-cause-candidate.md`](evidence/root-cause-candidate.md) | **the current lead** — schema match, save A/B, mechanism |
 
 > **On the trimmed logs:** the `MODULES` / `SKSE PLUGINS` / `PLUGINS` sections are removed. Nothing
 > diagnostic is lost — the fault address, registers and call stack are intact — I just did not want a
