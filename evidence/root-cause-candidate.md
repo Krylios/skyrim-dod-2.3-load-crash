@@ -80,9 +80,14 @@ Function Invoke(string asJsCode) Global Native
 The roster is assembled into a **Papyrus `String`** and pushed through a native bridge to a PrismaUI
 web view. Papyrus strings are serialised into the **`.ess`**, not the SKSE co-save.
 
-That resolves the result that had been hardest to place: deleting the `.skse` changed nothing. It
-also rules out JContainers by elimination — JContainers state lives in the co-save, and the co-save
-is demonstrably not where this lives.
+That resolves the result that had been hardest to place: deleting the `.skse` changed nothing.
+
+> **Correction.** An earlier version of this file said the co-save test "rules out JContainers."
+> That was wrong, and the mod's own documentation says so: **JContainers is a hard dependency of
+> Sanguine's Trade** (`Docs/ST_API_FOR_EXTENSIONS.md`). What the co-save test actually shows is
+> narrower and still useful — *the crashing payload* is not in the co-save, so whatever holds it is
+> not JContainers-backed storage. JContainers is used by the mod for other state, and it is a
+> shared framework many mods depend on. It is not a suspect and must not be disabled.
 
 It makes `RBX` legible too. 12,741 / 16,019 / 16,036 / 16,278 are consistent with **string lengths** —
 constant per save, different across saves, growing as the roster fills, and zero on a new game.
@@ -119,3 +124,37 @@ clear it.
 
 The *data* in these crashes is unambiguously Sanguine's Trade's schema, so that is the right place
 to start — but if the new-game test still fails, PrismaUI's other consumer is the next thing to pull.
+
+---
+
+## 8. What removing the mod does and does not require
+
+**Nothing else depends on it.** A scan of every `.esp` / `.esm` / `.esl` in the install for a
+Sanguine's Trade master reference returns **zero** hits. No patch, no extension, no compatibility
+plugin points at it, so unmounting it orphans nothing.
+
+**What it depends on, and what must stay:**
+
+| framework | status |
+|---|---|
+| **JContainers SE** | hard dependency of ST — but a shared framework across the list. **Leave enabled.** |
+| **PrismaUI** | ST's UI transport — also used by `Tailor - An Outfit and Wig Manager`. **Leave enabled.** |
+| SexLab P+ / OStim | ST routes scenes through them; framework-agnostic. Untouched by this. |
+
+**Tool re-runs, if the removal becomes permanent** (Rule 11 triggers, blanket by design):
+
+| tool | triggered | why |
+|---|---|---|
+| **Synthesis** | **yes** | four plugins removed — the trigger is any plugin added/removed/replaced |
+| **BodySlide** | **yes** | ships armor, wig and hair meshes |
+| ParallaxGen | probably | ~70 loose textures |
+| Pandora | unknown | no loose animations or behavior files; the 207 MB BSA could not be enumerated (BSArch not installed) |
+| DynDOLOD / TexGen / xLODGen | **no** | the plugin contains no worldspace or landscape records |
+
+> The record-signature counts behind that last row come from a raw scan of a binary plugin, which is
+> indicative rather than a proper census. The absence of worldspace records is consistent with what
+> the mod is — an interior, quest-and-script mod — but it has not been confirmed in xEdit.
+
+**Do not run any of them while the test is in progress.** A Synthesis re-run changes the load order
+mid-bisection, and if the mod turns out to be innocent it goes back in and the run has to be redone.
+Re-runs are for a settled list, not for a list under test.
